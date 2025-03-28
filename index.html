@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Menu</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url('https://e.thaco.link/bg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #333;
+        }
+
+        #cart-header {
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        #cart-items {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .cart-item {
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            margin: 5px;
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        .cart-item button {
+            background-color: #e44d26;
+            color: white;
+            padding: 2px 5px;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #e44d26;
+            animation: fadeIn 1s;
+        }
+
+        .tab-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .tab-buttons button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-buttons button:hover {
+            background-color: #ddd;
+        }
+
+        .tab-buttons button.active {
+            background-color: lightblue;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .drink,
+        .meal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .drink:hover,
+        .meal:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.01);
+        }
+
+        .drink-left,
+        .meal-left {
+            flex: 1;
+        }
+
+        .drink-right,
+        .meal-right {
+            /* You can set a fixed width or let the image determine the size */
+            /* width: 100px; */
+        }
+
+        .drink-right img,
+        .meal-right img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .drink-name,
+        .meal-name {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .drink-buttons,
+        .meal-buttons {
+            text-align: right;
+        }
+
+        .drink-buttons button,
+        .meal-buttons button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .drink-buttons button:hover,
+        .meal-buttons button:hover {
+            background-color: #ddd;
+            color: #e44d26;
+        }
+
+        .light_meal {
+            margin-top: 50px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            animation: fadeInUp 1s;
+        }
+
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            display: none;
+            animation: fadeInOut 2s;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInOut {
+            0%,
+            100% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cart-header">
+        <h2>Giỏ Hàng</h2>
+        <div id="cart-items"></div>
+        <button id="confirm-order">Xác nhận</button>
+    </div>
+
+    <div class="tab-buttons">
+        <button class="tab-button active" data-tab="drinks">Thức Uống</button>
+        <button class="tab-button" data-tab="food">Đồ Ăn</button>
+    </div>
+
+    <div id="drinks" class="tab-content active">
+        <div class="section">
+            <h2>THỨC UỐNG / Drink menu</h2>
+            <div class="drink">
+                <div class="drink-left">
+                    <div class="drink-name">
+                        <p>Cà phê đen/ Coffee:</p>
+                    </div>
+                    <div class="drink-buttons">
+                        <button data-item="Cà phê đen/ Hot Coffee" onclick="addToCart(this)">Nóng / Hot (0)</button>
+                        <button data-item="Cà phê đen đá/ Iced Coffee" onclick="addToCart(this)">Đá / Iced (0)</button>
+                    </div>
+                </div>
+                <div class="drink-right">
+                    <img src="url_to_hot_coffee_image" alt="Cà phê đen" width="100">
+                </div>
+            </div>
+
+            <div class="drink">
+                <div class="drink-left">
+                    <div class="drink-name">
+                        <p>Cà phê sữa/ Milk Coffee:</p>
+                    </div>
+                    <div class="drink-buttons">
+                        <button data-item="Cà phê sữa nóng / Hot Milk Coffee" onclick="addToCart(this)">Nóng / Hot (0)</button>
+                        <button data-item="Cà phê sữa đá / Iced Milk Coffee" onclick="addToCart(this)">Đá / Iced (0)</button>
+                    </div>
+                </div>
+                <div class="drink-right">
+                    <img src="url_to_hot_milk_coffee_image" alt="Cà phê sữa" width="100">
+                </div>
+            </div>
+
+           
+
+        </div>
+    </div>
+
+    <div id="food" class="tab-content">
+        <div class="section section-light light_meal">
+            <h2>THỨC ĂN NHẸ / Serving light meals</h2>
+             <div class="meal">
+                <div class="meal-name">
+                    <p>Bánh mì sandwich</p>
+                </div>
+                <div class="meal-buttons">
+                    <button data-item="Bánh mì sandwich kèm mứt dâu" onclick="addToCart(this)">kèm mứt dâu (0)</button>
+                    <button data-item="Bánh mì sandwich kèm phô mai" onclick="addToCart(this)">kèm phô mai (0)</button>
+                </div>
+            </div><div class="meal">
+                <div class="meal-name">
+                    <p>Ngũ cốc và sữa tươi</p>
+                </div>
+                <div class="meal-buttons">
+                    <button data-item="Ngũ cốc và sữa tươi" onclick="addToCart(this)">Chọn (0)</button>
+                </div>
+            </div><div class="meal">
+                <div class="meal-name">
+                    <p>Mì ly</p>
+                </div>
+
+                <div class="meal-buttons">
+                    <button data-item="Mì ly" onclick="addToCart(this)">Chọn (0)</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Hân hạnh phục vụ !</p>
+        <p>You're welcome !</p>
+    </div>
+
+    <script>
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const cartItems = {}; // Use object
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        function addToCart(button) {
+            const item = button.dataset.item;
+            if (cartItems[item]) {
+                cartItems[item]++;
+            } else {
+                cartItems[item] = 1;
+            }
+            updateCart();
+            showNotification();
+        }
+
+        function removeFromCart(item) {
+          delete cartItems[item];
+          updateCart();
+        }
+
+        function updateCart() {
+            const cartDiv = document.getElementById("cart-items");
+            cartDiv.innerHTML = "";
+            for (const item in cartItems) {
+                const itemDiv = document.createElement("div");
+                itemDiv.className = "cart-item";
+                itemDiv.innerHTML = `<span>${item} (x${cartItems[item]})</span> <button onclick="removeFromCart('${item}')">Xóa</button>`;
+                cartDiv.appendChild(itemDiv);
+            }
+            updateButtonQuantities();
+        }
+
+        function updateButtonQuantities() {
+            const buttons = document.querySelectorAll('.drink-buttons button, .meal-buttons button');
+            buttons.forEach(button => {
+                const item = button.dataset.item;
+                const quantity = cartItems[item] || 0;
+                button.textContent = button.textContent.replace(/\(\d+\)/, `(${quantity})`);
+            });
+        }
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 1500); // Hide after 1.5 seconds
+        }
+
+        // JavaScript to show item details on hover
+        const menuData = {
+            "Cà phê đen/ Hot Coffee": {
+                image: "https://kfehouse.vn/wp-content/uploads/2020/12/Ca-phe-da.png", // Replace with actual URL
+                description: "Cà phê đen nóng truyền thống của Việt Nam",
+            },
+            "Cà phê đen đá/ Iced Coffee": {
+                image: "https://kfehouse.vn/wp-content/uploads/2020/12/Ca-phe-da.png", // Replace with actual URL
+                description: "Cà phê đen đá sảng khoái",
+            },
+            "Cà phê sữa nóng / Hot Milk Coffee": {
+                image: "url_to_hot_milk_coffee_image",
+                description: "Cà phê sữa nóng",
+            },
+            "Cà phê sữa đá / Iced Milk Coffee": {
+                image: "url_to_iced_milk_coffee_image",
+                description: "Cà phê sữa đá",
+            },
+            "Cà phê Espresso nóng / Hot Espresso": {
+                image: "url_to_hot_espresso_image",
+                description: "Cà phê Espresso nóng",
+            },
+            "Cà phê Espresso đá / Iced Espresso": {
+                image: "url_to_iced_espresso_image",
+                description: "Cà phê Espresso đá",
+            },
+            "Cà phê Cappuccino / Cappuccino": {
+                image: "url_to_cappuccino_image",
+                description: "Cà phê Cappuccino",
+            },
+            "Trà túi lọc nóng / Hot Green Tea": {
+                image: "url_to_hot_green_tea_image",
+                description: "Trà túi lọc nóng",
+            },
+             "Trà túi lọc đá / Iced Green Tea": {
+                image: "url_to_iced_green_tea_image",
+                description: "Trà túi lọc đá",
+            },
+            "Trà Lipton nóng / Hot Lipton Tea": {
+                image: "url_to_hot_lipton_tea_image",
+                description: "Trà Lipton nóng",
+            },
+            "Trà Lipton đá / Iced Lipton Tea": {
+                image: "url_to_iced_lipton_tea_image",
+                description: "Trà Lipton đá",
+            },
+            "Trà chanh nóng / Hot Lemon Tea": {
+                image: "url_to_hot_lemon_tea_image",
+                description: "Trà chanh nóng",
+            },
+            "Trà chanh đá / Iced Lemon Tea": {
+                image: "url_to_iced_lemon_tea_image",
+                description: "Trà chanh đá",
+            },
+            "Ca cao sữa nóng / Hot Milk Cocoa": {
+                image: "url_to_hot_milk_cocoa_image",
+                description: "Ca cao sữa nóng",
+            },
+            "Ca cao sữa đá / Iced Milk Cocoa": {
+                image: "url_to_iced_milk_cocoa_image",
+                description: "Ca cao sữa đá",
+            },
+            "Nước ngọt Pepsi": {
+                image: "url_to_pepsi_image",
+                description: "Nước ngọt Pepsi",
+            },
+            "Nước tinh khiết": {
+                image: "url_to_water_image",
+                description: "Nước tinh khiết",
+            },
+            "Bánh mì sandwich kèm mứt dâu": {
+                image: "url_to_jam_sandwich_image",
+                description: "Bánh mì sandwich kèm mứt dâu",
+            },
+            "Bánh mì sandwich kèm phô mai": {
+                image: "url_to_cheese_sandwich_image",
+                description: "Bánh mì sandwich kèm phô mai",
+            },
+            "Ngũ cốc và sữa tươi": {
+                image: "url_to_cereal_image",
+                description: "Ngũ cốc và sữa tươi",
+            },
+            "Mì ly": {
+                image: "url_to_cup_noodles_image",
+                description: "Mì ly",
+            },
+            // ... Add data for other items
+        };
+
+        const itemNames = document.querySelectorAll(".drink-name p, .meal-name p");
+        itemNames.forEach((name) => {
+            name.addEventListener("mouseover", () => {
+                const itemName = name.textContent.trim();
+                const itemData = menuData[itemName];
+                if (itemData) {
+                    showItemDetails(itemData);
+                }
+            });
+
+            name.addEventListener("mouseout", () => {
+                hideItemDetails();
+            });
+        });
+
+        function showItemDetails(itemData) {
+            const detailDiv = document.getElementById('item-details');
+            if (!detailDiv) {
+                const newDetailDiv = document.createElement('div');
+                newDetailDiv.id = 'item-details';
+                newDetailDiv.style.position = 'absolute';
+                newDetailDiv.style.top = '100px';
+                newDetailDiv.style.right = '20px';
+                newDetailDiv.style.backgroundColor = 'white';
+                newDetailDiv.style.padding = '20px';
+                newDetailDiv.style.border = '1px solid #ccc';
+                document.body.appendChild(newDetailDiv);
+                showItemDetails(itemData);
+                return;
+            }
+            detailDiv.innerHTML = `
+                <img src="${itemData.image}" alt="${itemName}" width="100">
+                <p>${itemData.description}</p>
+            `;
+            detailDiv.style.display = 'block';
+        }
+
+        function hideItemDetails() {
+            const detailDiv = document.getElementById('item-details');
+            if (detailDiv) {
+                detailDiv.style.display = 'none';
+            }
+        }
+        document.getElementById("confirm-order").addEventListener("click", () => {
+        // Hiển thị thông báo cho khách hàng
+        alert("Đơn hàng của bạn đã được xác nhận. Vui lòng chờ phục vụ.");
+
+        // Sau khi xác nhận, bạn có thể xóa giỏ hàng
+        cartItems = {};
+        updateCart();
+    });
+    </script>
+</body>
+</html>
