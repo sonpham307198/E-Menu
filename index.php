@@ -298,7 +298,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <script> 
 		
 
-        const cartItems = {}; // Use object
+        var cartItems = {}; // Use object
 		const cartItemsKey = 'cartItems';
 		const cartExpiryKey = 'cartExpiry';
 		const cartExpiryHours = 3;
@@ -448,7 +448,7 @@ function updateButtonQuantities() {
 
 function showNotification() {
     const notification = document.getElementById('notification');
-    notification.textContent = 'Đã thêm vào giỏ hàng!';
+    notification.textContent = 'Đã thêm yêu cầu';
     notification.style.display = 'block';
     setTimeout(() => {
         notification.style.display = 'none';
@@ -471,19 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-/*document.getElementById("confirm-order").addEventListener("click", () => {
-    if (Object.keys(cartItems).length > 0) {
-		
-		var od=neworder ();
-		
-        alert("Yêu cầu của Quý khách đã được xác nhận. Chúng tôi hân hạnh được phục vụ.");
-        cartItems = {};
-        updateCart();
-        clearLocalCart(); // Xóa giỏ hàng local sau khi đặt hàng thành công
-    } else {
-        alert("Quý khách vui lòng chọn đồ uống/đồ ăn nhẹ.");
-    }
-});*/
+
 
 function neworder () {
 	jQuery.ajax({url: "https://script.google.com/macros/s/AKfycbzxCzys9Qp7ZIZVBVRZgUXS9nmw93KZyVQIRicDzvBFYrxR-ydEheWhoT8FvoxJK6DlWw/exec?key=auto&sr="+localStorage.getItem('showroomId')+"&tbl="+localStorage.getItem('tableId')+"&ss="+localStorage.getItem('locationExpiry')+"&od="+localStorage.getItem('cartExpiry')+"&li="+ encodeURI(JSON.stringify(localStorage.getItem('cartItems'))), success: function(result){
@@ -986,7 +974,7 @@ function neworder () {
            
           </ul>
      <div style="padding: 20px 10px;margin:0px">
-        <a href="#close-modal" onclick='neworder ()' style="width: 50%;padding: 5px;border: 1px solid silver;font-weight: bold;font-size: 12pt;display: block;text-align: center;color: #01498b;float: left;" rel="modal:close">XÁC NHẬN</a>
+        <a href="#close-modal" style="width: 50%;padding: 5px;border: 1px solid silver;font-weight: bold;font-size: 12pt;display: block;text-align: center;color: #01498b;float: left;" rel="modal:close">XÁC NHẬN</a>
                 <a style="width: 40%;padding: 5px;font-size: 12pt;display: block;text-align: center;color: black;font-style: italic;border: 1px solid white;border-bottom: 1px solid silver;float: right;" onclick="myclearpk()">Làm mới</a>
 
       </div>
@@ -1056,7 +1044,18 @@ function neworder () {
 
 
         <script>
-
+document.getElementById("confirm-order").addEventListener("click", () => {
+    if (Object.keys(cartItems).length > 0) {
+		var od=neworder ();
+		console.log(JSON.stringify(od));
+        alert("Yêu cầu của Quý khách đã được xác nhận. Chúng tôi hân hạnh được phục vụ.");
+        cartItems = {};
+        updateCart();
+        clearLocalCart(); // Xóa giỏ hàng local sau khi đặt hàng thành công
+    } else {
+        alert("Quý khách vui lòng chọn đồ uống/đồ ăn nhẹ.");
+    }
+});
        jQuery(document).ready(function () {
               if (localStorage.getItem('menu-data')==null||localStorage.getItem('menu-data')=='{"result":"error","error":{"name":"Exception"}}') {
                   init();
